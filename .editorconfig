@@ -26,3 +26,6 @@ dotnet_diagnostic.SA1401.severity = none
 
 # SA1600: Elements should be documented
 dotnet_diagnostic.SA1600.severity = none
+
+# IDE0044: Add readonly modifier
+dotnet_style_readonly_field = true:none
