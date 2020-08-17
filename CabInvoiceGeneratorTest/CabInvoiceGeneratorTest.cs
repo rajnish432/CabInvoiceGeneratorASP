@@ -31,5 +31,26 @@ namespace CabInvoiceGeneratorTest
             double totalFare = this.cabInvoiceGenerator.CalculateFare(3.0, 5.0);
             Assert.AreEqual(35.0, totalFare);
         }
+
+        /// <summary>
+        /// Test to get minimum fare using given time and distance.
+        /// </summary>
+        [Test]
+        public void GivenDistanceAndTime_WhenProper_ShouldReturnMinimumFare()
+        {
+            double totalFare = this.cabInvoiceGenerator.CalculateFare(0.2, 2.0);
+            Assert.AreEqual(5.0, totalFare);
+        }
+
+        /// <summary>
+        /// Test to get total fare for Multiple Rides.
+        /// </summary>
+        [Test]
+        public void GivenDistanceAndTimeForMultipleRides_WhenProper_ShouldReturnAggregateFare()
+        {
+            Ride[] ride = { new Ride(3.0, 5.0), new Ride(2.0, 5.0) };
+            double aggregateFare = this.cabInvoiceGenerator.GetMultipleRideFare(ride);
+            Assert.AreEqual(30.0, aggregateFare);
+        }
     }
 }
