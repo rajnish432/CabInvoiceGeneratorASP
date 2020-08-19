@@ -4,6 +4,7 @@
 namespace CabInvoiceGenerator
 {
     using System;
+    using System.Text.RegularExpressions;
 
     /// <summary>
     /// Cab Invoice Generator Class.
@@ -13,6 +14,7 @@ namespace CabInvoiceGenerator
         private static double COST_PER_KILOMETER;
         private static double COST_PER_MINUTE;
         private static double MINIMUM_FARE;
+        private Regex userIDPattern = new Regex(@"^((?=[^@|#|&|%|$]*[@|&|#|%|$][^@|#|&|%|$]*$)*(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9#@$?]{8,})$");
         private double cabFare = 0.0;
         private RideRepository rideRepository = new RideRepository();
         private RideOption rideOption = new RideOption();
@@ -52,7 +54,14 @@ namespace CabInvoiceGenerator
 
         public void MapRidesToUser(string userID, Ride[] rides)
         {
-            this.rideRepository.AddCabRides(userID, rides);
+            if (this.userIDPattern.IsMatch(userID))
+            {
+                this.rideRepository.AddCabRides(userID, rides);
+            }
+            else
+            {
+                throw new CabInvoiceException("Invalid UserId Format", CabInvoiceException.ExceptionType.INVALID_USER_ID);
+            }
         }
 
         public InvoiceSummary GetInvoiceSummary(RideOption.RideTypes rideTypes, string userID)
